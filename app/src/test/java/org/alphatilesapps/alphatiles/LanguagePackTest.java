@@ -1,0 +1,178 @@
+package org.alphatilesapps.alphatiles;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Loads the committed fixture language flavor and checks the behavior later
+ * efficiency work is most likely to change: how a word becomes tiles, how those
+ * tiles become the word again, and which stage the word is introduced in.
+ *
+ * Run with: bash ./gradlew :app:testFixtureDebugUnitTest
+ */
+@RunWith(RobolectricTestRunner.class)
+public class LanguagePackTest {
+
+    private Start start;
+
+    @Before
+    public void loadFixturePack() {
+        resetStaticLanguageState();
+        // get() builds the activity without onCreate, so the sound pool and
+        // loading screen stay out of this. Resources are the fixture flavor.
+        start = Robolectric.buildActivity(Start.class).get();
+
+        start.buildLangInfoList();
+        start.buildSettingsList();
+        Start.differentiatesTileTypes = Boolean.parseBoolean(
+                Start.settingsList.find("Differentiates types of multitype symbols"));
+        Start.stageCorrespondenceRatio = Double.parseDouble(
+                Start.settingsList.find("Stage correspondence ratio"));
+        start.buildTileList();
+        start.distributeTilesIntoTypeLists();
+        start.buildWordList();
+        start.buildTileStagesLists();
+        start.buildWordStagesLists();
+        start.buildGameList();
+        start.buildKeyList();
+    }
+
+    @Test
+    public void test_packReportsItsScriptAndPlaceholder() {
+        assertEquals("Thai", Start.scriptType);
+        assertEquals("◌", Start.placeholderCharacter);
+        assertEquals("Fixture", Start.langInfoList.find("Game Name"));
+        assertEquals("LTR", Start.langInfoList.find("Script direction (LTR or RTL)"));
+        assertTrue(Start.differentiatesTileTypes);
+        assertEquals(1.0, Start.stageCorrespondenceRatio, 0.0);
+    }
+
+    @Test
+    public void test_longestTileMatchWins() {
+        assertEquals(Arrays.asList("sh", "i", "p"), textsOf("ship"));
+    }
+
+    @Test
+    public void test_leadingVowelRoundTrip() {
+        assertEquals(Arrays.asList("เ◌", "ก"), textsOf("เก"));
+        assertEquals("เก", rebuilt("เก"));
+    }
+
+    @Test
+    public void test_followingVowelRoundTrip() {
+        assertEquals(Arrays.asList("ก", "◌า"), textsOf("กา"));
+        assertEquals("กา", rebuilt("กา"));
+    }
+
+    @Test
+    public void test_plainWordRoundTrip() {
+        assertEquals(Arrays.asList("c", "a", "t"), textsOf("cat"));
+        assertEquals("cat", rebuilt("cat"));
+        assertEquals("ship", rebuilt("ship"));
+    }
+
+    @Test
+    public void test_multitypeTileUsesTheWordListType() {
+        // "cx" is a consonant plus the second type of "x". A word that is only
+        // that second type is dropped by the Thai reorder, so it cannot show this.
+        ArrayList<Start.Tile> tiles = Start.tileList.parseWordIntoTiles("cx", word("cx"));
+        assertEquals(Arrays.asList("c", "x"), textsOf("cx"));
+        assertEquals("C", tiles.get(0).typeOfThisTileInstance);
+        assertEquals("X", tiles.get(1).typeOfThisTileInstance);
+        assertEquals("x_audio_b", tiles.get(1).audioForThisTileType);
+        assertTrue(Start.MULTITYPE_TILES.contains("x"));
+        assertEquals("cx", rebuilt("cx"));
+    }
+
+    @Test
+    public void test_wordsEnterTheStageThatCoversEveryTile() {
+        assertEquals(Arrays.asList("cat", "เก", "กา"), stageNames(1));
+        assertEquals(Arrays.asList("ship", "cx"), stageNames(2));
+    }
+
+    @Test
+    public void test_gamesAndKeyboardLoad() {
+        assertEquals(1, Start.gameList.size());
+        assertEquals("Brazil", Start.gameList.get(0).country);
+        assertEquals("T", Start.gameList.get(0).mode);
+        assertFalse(Start.hasSyllableGames);
+        assertEquals(1, Start.keyList.size());
+        assertEquals("c", Start.keyList.get(0).text);
+    }
+
+    private static List<String> textsOf(String wordInLOP) {
+        ArrayList<String> texts = new ArrayList<>();
+        for (Start.Tile tile : Start.tileList.parseWordIntoTiles(wordInLOP, word(wordInLOP))) {
+            texts.add(tile.text);
+        }
+        return texts;
+    }
+
+    private static String rebuilt(String wordInLOP) {
+        Start.Word word = word(wordInLOP);
+        return GameActivity.combineTilesToMakeWord(
+                Start.tileList.parseWordIntoTiles(word.wordInLOP, word), word, -1);
+    }
+
+    private static Start.Word word(String wordInLOP) {
+        Start.Word word = Start.lopWordHashMap.find(wordInLOP);
+        if (word == null) {
+            throw new AssertionError("fixture word list has no " + wordInLOP);
+        }
+        return word;
+    }
+
+    private static List<String> stageNames(int stageNumber) {
+        ArrayList<String> names = new ArrayList<>();
+        for (Start.Word word : Start.wordStagesLists.get(stageNumber - 1)) {
+            names.add(word.wordInLOP);
+        }
+        return names;
+    }
+
+    private static void resetStaticLanguageState() {
+        Start.tileList = null;
+        Start.tileListNoSAD = null;
+        Start.wordList = null;
+        Start.tileStagesLists = null;
+        Start.wordStagesLists = null;
+        Start.tileHashMap = null;
+        Start.tileHashMapNoSAD = null;
+        Start.lopWordHashMap = null;
+        Start.lwcWordHashMap = null;
+        Start.settingsList = null;
+        Start.langInfoList = null;
+        Start.gameList = null;
+        Start.keyList = null;
+        Start.scriptType = null;
+        Start.placeholderCharacter = null;
+        Start.differentiatesTileTypes = null;
+        Start.stageCorrespondenceRatio = 0;
+        Start.hasSyllableGames = false;
+        Start.hasSAD = false;
+        Start.CONSONANTS.clear();
+        Start.PLACEHOLDER_CONSONANTS.clear();
+        Start.SILENT_PRELIMINARY_TILES.clear();
+        Start.SILENT_PLACEHOLDER_CONSONANTS.clear();
+        Start.VOWELS.clear();
+        Start.CorV.clear();
+        Start.TONES.clear();
+        Start.ADs.clear();
+        Start.Ds.clear();
+        Start.SAD.clear();
+        Start.SYLLABLES.clear();
+        Start.SAD_STRINGS.clear();
+        Start.MULTITYPE_TILES.clear();
+    }
+}
