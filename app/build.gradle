@@ -21,6 +21,10 @@ android {
         buildConfig = true
     }
 
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+
 //    tasks.withType(JavaCompile) {
 //        options.compilerArgs << "-Xlint:deprecation"
 //    }
@@ -58,6 +62,13 @@ android {
             dimension "language"
             applicationIdSuffix ".blue.tpxTeocuitlapa"
             resValue "string", "app_name", 'Mu̱ꞌtsíin meꞌphaa (tpxTeo)'
+        }
+        // Committed pack used by unit tests. A community language folder of the
+        // same kind replaces this when that flavor is built.
+        fixture {
+            dimension "language"
+            applicationIdSuffix ".blue.fixture"
+            resValue "string", "app_name", "Alpha Tiles Fixture"
         }
     }
     namespace = 'org.alphatilesapps.alphatiles'

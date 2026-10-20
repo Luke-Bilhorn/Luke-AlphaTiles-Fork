@@ -1,0 +1,2 @@
+Door	Country	ChallengeLevel	Color	InstructionAudio	AudioDuration	SyllOrTile	StagesIncluded
+1	Brazil	1	blue	zz_brazil	0	T	1

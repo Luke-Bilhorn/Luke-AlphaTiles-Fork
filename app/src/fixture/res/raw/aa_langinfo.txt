@@ -1,0 +1,5 @@
+Item	Answer
+7. Game Name (In Local Lang)	Fixture
+8. Script direction (LTR or RTL)	LTR
+10. The word NAME in local language	name
+11. Script type	Thai

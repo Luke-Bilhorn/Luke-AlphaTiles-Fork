@@ -1,0 +1,6 @@
+WordInLWC	WordInLOP	Duration	MixedDefs	Adjustment	Stage
+cat	cat	400	-	0	-
+ship	ship	500	-	0	-
+kay	เก	600	-	0	-
+kaa	กา	700	-	0	-
+ox	cx	800	X	0	-

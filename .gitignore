@@ -23,10 +23,11 @@
 # be automatically regenerated
 /app/build
 
-# Explicitly includes the three main source folders
+# Explicitly includes the source folders that belong in the repo
 !/app/src/main
 !/app/src/androidTest
 !/app/src/test
+!/app/src/fixture
 # Explicitly includes run configurations
 !/.idea/runConfigurations
 !/.idea/runConfigurations/*

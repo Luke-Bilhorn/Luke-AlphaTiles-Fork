@@ -1,0 +1,13 @@
+tiles	Or1	Or2	Or3	Type	AudioName	Upper	Type2	AudioName2	Type3	AudioName3	IconicWord	Color	Duration	Stage	Stage2	Stage3
+c	a	t	p	C	c_audio	C	none	X	none	X	cat	0	0	1	1	1
+a	c	t	p	V	a_audio	A	none	X	none	X	ant	0	0	1	1	1
+t	c	a	p	C	t_audio	T	none	X	none	X	top	0	0	1	1	1
+s	c	a	t	C	s_audio	S	none	X	none	X	sun	0	0	1	1	1
+h	c	a	t	C	h_audio	H	none	X	none	X	hat	0	0	2	1	1
+sh	c	a	t	C	sh_audio	SH	none	X	none	X	ship	0	0	2	1	1
+i	c	a	t	V	i_audio	I	none	X	none	X	ink	0	0	1	1	1
+p	c	a	t	C	p_audio	P	none	X	none	X	pen	0	0	2	1	1
+x	c	a	t	C	x_audio	X	X	x_audio_b	none	X	ox	0	0	1	2	1
+ก	c	a	t	C	ko_audio	ก	none	X	none	X	ko	0	0	1	1	1
+เ◌	c	a	t	LV	e_audio	เ◌	none	X	none	X	e	0	0	1	1	1
+◌า	c	a	t	FV	aa_audio	◌า	none	X	none	X	aa	0	0	1	1	1

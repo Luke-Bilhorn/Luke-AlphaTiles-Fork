@@ -1,0 +1,9 @@
+Setting	Value
+Has tile audio	false
+Has syllable audio	false
+Send analytics	false
+Differentiates types of multitype symbols	true
+Stage correspondence ratio	1.0
+First letter stage correspondence	false
+Stage 1-2 max word length	99
+Stand-in base for combining tiles	◌
