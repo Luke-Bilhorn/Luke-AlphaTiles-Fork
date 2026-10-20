@@ -156,37 +156,7 @@ public class Start extends AppCompatActivity {
                 .build();
 
         buildTileList();
-        for (int d = 0; d < tileList.size(); d++) {
-            Tile thisTile = tileList.get(d);
-            String thisTileType = thisTile.typeOfThisTileInstance;
-            if (!thisTile.tileTypeB.equals("none")) {
-                MULTITYPE_TILES.add(thisTile.text);
-            } else {
-                if (thisTileType.equals("C")) {
-                    CONSONANTS.add(thisTile);
-                    CorV.add(thisTile);
-                }
-                else if (thisTileType.equals("PC")) {
-                    PLACEHOLDER_CONSONANTS.add(thisTile);
-                }
-                else if (thisTileType.matches("(LV|BV|AV|FV|V)")) {
-                    VOWELS.add(thisTile);
-                    CorV.add(thisTile);
-                }
-                else if (thisTileType.equals("T")) {
-                    TONES.add(thisTile);
-                } else if (thisTileType.equals("D")) {
-                    Ds.add(thisTile);
-                } else if (thisTileType.equals("AD")) {
-                    ADs.add(thisTile);
-                }
-                else if (thisTileType.equals("SAD")) {
-                    hasSAD = true;
-                    SAD.add(thisTile);
-                    SAD_STRINGS.add(thisTile.text);
-                }
-            }
-        }
+        distributeTilesIntoTypeLists();
         LOGGER.info("LoadProgress: completed buildTileList()");
 
         Collections.shuffle(CONSONANTS);
@@ -270,6 +240,43 @@ public class Start extends AppCompatActivity {
         gameSounds.release();
         gameSounds = null;
     }
+
+    // Sorts the loaded tile list into the type lists games read. Separate from
+    // onCreate so a test can load a language pack without starting the sound pool.
+    void distributeTilesIntoTypeLists() {
+        for (int d = 0; d < tileList.size(); d++) {
+            Tile thisTile = tileList.get(d);
+            String thisTileType = thisTile.typeOfThisTileInstance;
+            if (!thisTile.tileTypeB.equals("none")) {
+                MULTITYPE_TILES.add(thisTile.text);
+            } else {
+                if (thisTileType.equals("C")) {
+                    CONSONANTS.add(thisTile);
+                    CorV.add(thisTile);
+                }
+                else if (thisTileType.equals("PC")) {
+                    PLACEHOLDER_CONSONANTS.add(thisTile);
+                }
+                else if (thisTileType.matches("(LV|BV|AV|FV|V)")) {
+                    VOWELS.add(thisTile);
+                    CorV.add(thisTile);
+                }
+                else if (thisTileType.equals("T")) {
+                    TONES.add(thisTile);
+                } else if (thisTileType.equals("D")) {
+                    Ds.add(thisTile);
+                } else if (thisTileType.equals("AD")) {
+                    ADs.add(thisTile);
+                }
+                else if (thisTileType.equals("SAD")) {
+                    hasSAD = true;
+                    SAD.add(thisTile);
+                    SAD_STRINGS.add(thisTile.text);
+                }
+            }
+        }
+    }
+
     public void buildTileList() {
         // KP, Oct 2020
         // AH Nov 2020, updated by AH to allow for spaces in fields (some common nouns in some languages have spaces
