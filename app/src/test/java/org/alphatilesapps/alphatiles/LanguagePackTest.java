@@ -77,18 +77,24 @@ public class LanguagePackTest {
 
     @Test
     public void test_wordsEnterTheStageThatCoversEveryTile() {
-        assertEquals(Arrays.asList("cat", "เก", "กา"), stageNames(1));
+        assertEquals(Arrays.asList("cat", "เก", "กา", "chsh", "sch", "c#at", "c'"), stageNames(1));
         assertEquals(Arrays.asList("ship", "cx"), stageNames(2));
+        assertEquals(Arrays.asList("c-t"), stageNames(3));
+        assertEquals(Arrays.asList("ka.ke"), stageNames(4));
+        assertEquals(Arrays.asList("c", "a", "t", "s", "i", "p"), stageNames(7));
     }
 
     @Test
     public void test_gamesAndKeyboardLoad() {
-        assertEquals(1, Start.gameList.size());
+        assertEquals(6, Start.gameList.size());
         assertEquals("Brazil", Start.gameList.get(0).country);
         assertEquals("T", Start.gameList.get(0).mode);
-        assertFalse(Start.hasSyllableGames);
-        assertEquals(1, Start.keyList.size());
+        assertEquals("S", Start.gameList.get(1).mode);
+        assertTrue(Start.hasSyllableGames);
+        assertEquals(3, Start.keyList.size());
         assertEquals("c", Start.keyList.get(0).text);
+        assertEquals(12, Start.nameList.size());
+        assertEquals("Ana", Start.nameList.get(0));
     }
 
     private static List<String> textsOf(String wordInLOP) {

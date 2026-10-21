@@ -20,4 +20,14 @@ public class UtilTest {
         assertEquals("09", Util.returnPlayerStringToAppend(9));
         assertEquals("10", Util.returnPlayerStringToAppend(10));
     }
+
+    @Test
+    public void test_getMinFontSizeStaysFinite() {
+        float shortWord = Util.getMinFontSize(new String[]{"a"});
+        float longWord = Util.getMinFontSize(new String[]{"a", "alphabet"});
+        assertTrue(shortWord > 0);
+        assertTrue(longWord > 0);
+        assertTrue(longWord <= shortWord);
+        Util.logMemory();
+    }
 }

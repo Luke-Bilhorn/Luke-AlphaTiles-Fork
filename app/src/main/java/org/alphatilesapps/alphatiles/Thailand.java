@@ -422,7 +422,8 @@ public class Thailand extends GameActivity {
         levelBegunTime = System.currentTimeMillis();
     }
 
-    private boolean verifyFreshTile(String refString, int freshChecks) {
+    // Package-visible so a test can check that a prompt is not repeated immediately.
+    boolean verifyFreshTile(String refString, int freshChecks) {
         if ((!refString.equalsIgnoreCase(refStringLast)
                 && !refString.equalsIgnoreCase(refStringSecondToLast)
                 && !refString.equalsIgnoreCase(refStringThirdToLast))

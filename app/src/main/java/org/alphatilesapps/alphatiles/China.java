@@ -334,7 +334,8 @@ public class China extends GameActivity {
         }
     }
 
-    private boolean areAllLinesSolved() {
+    // Package-visible so a test can check the win condition without a board.
+    boolean areAllLinesSolved() {
 
         boolean solved = false;
 

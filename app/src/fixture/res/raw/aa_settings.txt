@@ -7,3 +7,11 @@ Stage correspondence ratio	1.0
 First letter stage correspondence	false
 Stage 1-2 max word length	99
 Stand-in base for combining tiles	◌
+Chile keyboard width	7
+Chile base guess count	8
+Chile minimum word length	3
+Chile maximum word length	10
+Italy Deck Size	16
+After 12 checked trackers	1
+Number of avatars	12
+Change arrow colors	true

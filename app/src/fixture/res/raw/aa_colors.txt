@@ -1,3 +1,10 @@
 Game Color Number	Color Name	Hex Code
 0	grey	#808080
 1	green	#00AA00
+2	red	#FF0000
+3	blue	#0000FF
+4	yellow	#FFFF00
+5	orange	#FFA500
+6	white	#FFFFFF
+7	black	#000000
+8	gray	#888888

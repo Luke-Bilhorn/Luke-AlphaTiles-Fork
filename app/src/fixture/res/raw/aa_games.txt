@@ -1,2 +1,7 @@
 Door	Country	ChallengeLevel	Color	InstructionAudio	AudioDuration	SyllOrTile	StagesIncluded
-1	Brazil	1	blue	zz_brazil	0	T	1
+1	Brazil	1	0	zz_brazil	0	T	1
+2	Sudan	1	0	zz_sudan	0	S	1
+3	Malaysia	1	0	zz_malaysia	0	T	1
+4	Italy	1	0	zz_italy	0	T	7
+5	Georgia	7	0	zz_georgia	0	T	1
+6	Thailand	111	0	zz_thailand	0	T	1

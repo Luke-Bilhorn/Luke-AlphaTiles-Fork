@@ -73,6 +73,25 @@ public final class FixturePack {
         Start.tileAudioIDs = new HashMap<>();
         Start.syllableAudioIDs = new HashMap<>();
         Start.tileDurations = new HashMap<>();
+        if (Start.wordList != null) {
+            for (Start.Word word : Start.wordList) {
+                Start.wordAudioIDs.put(word.wordInLWC, 1);
+            }
+        }
+        if (Start.tileList != null) {
+            for (Start.Tile tile : Start.tileList) {
+                Start.tileAudioIDs.put(tile.audioName, 1);
+                Start.tileAudioIDs.put(tile.audioNameB, 1);
+                Start.tileAudioIDs.put(tile.audioNameC, 1);
+                Start.tileAudioIDs.put(tile.audioForThisTileType, 1);
+                Start.tileDurations.put(tile.audioForThisTileType, 1);
+            }
+        }
+        if (Start.syllableList != null) {
+            for (Start.Syllable syllable : Start.syllableList) {
+                Start.syllableAudioIDs.put(syllable.audioName, 1);
+            }
+        }
         AudioAttributes attributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_GAME)
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)

@@ -665,7 +665,8 @@ public class Myanmar extends GameActivity {
         return -1; // Not found — you may want to handle this case
     }
 
-    private int getDirection(int fromTile, int toTile) {
+    // Package-visible so a test can check a word-search step without the board.
+    int getDirection(int fromTile, int toTile) {
         // Assuming tiles are arranged in a grid (you'll need to adjust based on your grid size)
         int gridWidth = 7; // Adjust this to match your actual grid width
 
@@ -690,7 +691,7 @@ public class Myanmar extends GameActivity {
         return 0; // Should not happen for adjacent tiles
     }
 
-    private boolean isAdjacent(int index1, int index2) {
+    boolean isAdjacent(int index1, int index2) {
         int row1 = index1 / 7; // Assuming a grid width of 7
         int col1 = index1 % 7;
         int row2 = index2 / 7;

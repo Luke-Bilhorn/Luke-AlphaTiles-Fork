@@ -1,2 +1,4 @@
 Syllable	Or1	Or2	Or3	SyllableAudioName	Duration	Color
-ka	ke	ki	ko	ka_audio	400	blue
+ka	ke	ki	ka	ka_audio	400	0
+ke	ka	ki	ka	ke_audio	400	0
+ki	ka	ke	ka	ki_audio	400	0
