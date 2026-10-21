@@ -217,7 +217,8 @@ public class Start extends AppCompatActivity {
         }
     }
 
-    private void buildColorList() {
+    // Package-visible so a test can load colors without starting the sound pool.
+    void buildColorList() {
         Scanner scanner = new Scanner(getResources().openRawResource(R.raw.aa_colors));
 
         boolean header = true;

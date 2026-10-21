@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
@@ -24,28 +23,9 @@ import java.util.List;
 @RunWith(RobolectricTestRunner.class)
 public class LanguagePackTest {
 
-    private Start start;
-
     @Before
     public void loadFixturePack() {
-        resetStaticLanguageState();
-        // get() builds the activity without onCreate, so the sound pool and
-        // loading screen stay out of this. Resources are the fixture flavor.
-        start = Robolectric.buildActivity(Start.class).get();
-
-        start.buildLangInfoList();
-        start.buildSettingsList();
-        Start.differentiatesTileTypes = Boolean.parseBoolean(
-                Start.settingsList.find("Differentiates types of multitype symbols"));
-        Start.stageCorrespondenceRatio = Double.parseDouble(
-                Start.settingsList.find("Stage correspondence ratio"));
-        start.buildTileList();
-        start.distributeTilesIntoTypeLists();
-        start.buildWordList();
-        start.buildTileStagesLists();
-        start.buildWordStagesLists();
-        start.buildGameList();
-        start.buildKeyList();
+        FixturePack.load();
     }
 
     @Test
@@ -139,40 +119,5 @@ public class LanguagePackTest {
             names.add(word.wordInLOP);
         }
         return names;
-    }
-
-    private static void resetStaticLanguageState() {
-        Start.tileList = null;
-        Start.tileListNoSAD = null;
-        Start.wordList = null;
-        Start.tileStagesLists = null;
-        Start.wordStagesLists = null;
-        Start.tileHashMap = null;
-        Start.tileHashMapNoSAD = null;
-        Start.lopWordHashMap = null;
-        Start.lwcWordHashMap = null;
-        Start.settingsList = null;
-        Start.langInfoList = null;
-        Start.gameList = null;
-        Start.keyList = null;
-        Start.scriptType = null;
-        Start.placeholderCharacter = null;
-        Start.differentiatesTileTypes = null;
-        Start.stageCorrespondenceRatio = 0;
-        Start.hasSyllableGames = false;
-        Start.hasSAD = false;
-        Start.CONSONANTS.clear();
-        Start.PLACEHOLDER_CONSONANTS.clear();
-        Start.SILENT_PRELIMINARY_TILES.clear();
-        Start.SILENT_PLACEHOLDER_CONSONANTS.clear();
-        Start.VOWELS.clear();
-        Start.CorV.clear();
-        Start.TONES.clear();
-        Start.ADs.clear();
-        Start.Ds.clear();
-        Start.SAD.clear();
-        Start.SYLLABLES.clear();
-        Start.SAD_STRINGS.clear();
-        Start.MULTITYPE_TILES.clear();
     }
 }
