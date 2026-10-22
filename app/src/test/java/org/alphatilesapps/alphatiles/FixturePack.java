@@ -61,6 +61,9 @@ public final class FixturePack {
                 Start.SYLLABLES.add(Start.syllableList.get(d).text);
             }
         }
+        // Chile's color constants read the color list when the class loads,
+        // so this has to happen after buildColorList().
+        Chile.data = null;
     }
 
     public static void rebuildWordStages() {
@@ -167,7 +170,6 @@ public final class FixturePack {
         Start.syllableAudioIDs = null;
         Start.tileDurations = null;
         Start.gameSounds = null;
-        Chile.data = null;
         Start.colorList.clear();
         Start.boxColors.clear();
         Start.CONSONANTS.clear();
