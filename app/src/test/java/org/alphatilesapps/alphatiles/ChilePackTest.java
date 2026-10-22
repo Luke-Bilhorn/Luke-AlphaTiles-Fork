@@ -2,6 +2,8 @@ package org.alphatilesapps.alphatiles;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -32,5 +34,13 @@ public class ChilePackTest {
         assertEquals("c", data.keys[0]);
         assertEquals(new HashSet<>(Arrays.asList("c", "a", "t", "sh", "i", "p", "-")),
                 new HashSet<>(Arrays.asList(data.keys)));
+    }
+
+    @Test
+    public void test_openingChileBuildsTheGuessList() {
+        assertNull(Chile.data);
+        FixturePack.open(Chile.class, FixturePack.gameIntent(1, 1, 1, "T", 1, "Chile"));
+        assertNotNull(Chile.data);
+        assertEquals(4, Chile.data.words.size());
     }
 }

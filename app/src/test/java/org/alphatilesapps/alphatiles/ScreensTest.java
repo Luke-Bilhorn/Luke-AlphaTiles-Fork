@@ -2,6 +2,7 @@ package org.alphatilesapps.alphatiles;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -35,8 +36,7 @@ public class ScreensTest {
         Intent next = shadowOf(start).getNextStartedActivity();
         assertEquals(LoadingScreen.class.getName(), next.getComponent().getClassName());
         assertNotNull(start.gameSounds);
-        assertNotNull(Chile.data);
-        assertFalseEmpty(Chile.data.words);
+        assertNull(Chile.data);
     }
 
     @Test
@@ -120,9 +120,5 @@ public class ScreensTest {
             }
         }
         throw new AssertionError("earth has no door " + tag);
-    }
-
-    private static void assertFalseEmpty(java.util.List<?> list) {
-        org.junit.Assert.assertFalse(list.isEmpty());
     }
 }

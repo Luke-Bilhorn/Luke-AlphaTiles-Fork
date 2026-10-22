@@ -167,6 +167,7 @@ public final class FixturePack {
         Start.syllableAudioIDs = null;
         Start.tileDurations = null;
         Start.gameSounds = null;
+        Chile.data = null;
         Start.colorList.clear();
         Start.boxColors.clear();
         Start.CONSONANTS.clear();

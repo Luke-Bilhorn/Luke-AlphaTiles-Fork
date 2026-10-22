@@ -205,8 +205,6 @@ public class Start extends AppCompatActivity {
                 }
             }
         }
-        Chile.data = Chile.chilePreProcess();
-
         Intent intent = new Intent(this, LoadingScreen.class);
         startActivity(intent);
 
