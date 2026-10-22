@@ -2,9 +2,11 @@ package org.alphatilesapps.alphatiles;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.robolectric.Shadows.shadowOf;
 
 import android.content.Intent;
+import android.media.SoundPool;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.android.controller.ActivityController;
 
 /**
  * Opens each screen that can run without recorded clips and checks the text
@@ -34,6 +37,17 @@ public class ScreensTest {
         assertNotNull(start.gameSounds);
         assertNotNull(Chile.data);
         assertFalseEmpty(Chile.data.words);
+    }
+
+    @Test
+    public void test_theSoundPoolOutlivesTheLauncher() {
+        ActivityController<Start> first = Robolectric.buildActivity(Start.class).setup();
+        SoundPool pool = Start.gameSounds;
+        first.destroy();
+        assertSame(pool, Start.gameSounds);
+
+        Robolectric.buildActivity(Start.class).setup();
+        assertSame(pool, Start.gameSounds);
     }
 
     @Test

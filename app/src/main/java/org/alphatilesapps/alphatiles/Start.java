@@ -147,13 +147,17 @@ public class Start extends AppCompatActivity {
             stageCorrespondenceRatio = 0.5;
         }
 
-        AudioAttributes attributes = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_GAME)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build();
-        gameSounds = new SoundPool.Builder()
-                .setAudioAttributes(attributes)
-                .build();
+        // The pool is shared by every later screen. A recreated launcher reuses
+        // it so a stopped Start being rebuilt does not replace the live pool.
+        if (gameSounds == null) {
+            AudioAttributes attributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            gameSounds = new SoundPool.Builder()
+                    .setAudioAttributes(attributes)
+                    .build();
+        }
 
         buildTileList();
         distributeTilesIntoTypeLists();
@@ -232,14 +236,6 @@ public class Start extends AppCompatActivity {
                 colorList.add(thisLineArray[2]);
             }
         }
-    }
-
-    //memory leak fix
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        gameSounds.release();
-        gameSounds = null;
     }
 
     // Sorts the loaded tile list into the type lists games read. Separate from
