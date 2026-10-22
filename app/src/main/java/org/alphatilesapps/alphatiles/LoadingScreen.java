@@ -50,6 +50,7 @@ public class LoadingScreen extends AppCompatActivity {
     //note: audio instructions use MediaPlayer, not SoundPool
 
     private Handler mHandler;
+    private Timer colorTimer;
     Context context;
     ProgressBar progressBar;
 
@@ -89,39 +90,31 @@ public class LoadingScreen extends AppCompatActivity {
 
         Intent intent = new Intent(this, ChoosePlayer.class);
 
-        // load audio in background threads to avoid blocking UI thread
+        // Silent tiles were included in the expected count. Drop them before
+        // any load finishes, so the completion check is not racing a decrement.
+        if (hasTileAudio) {
+            for (Start.Tile tile : tileList) {
+                if (tile.audioForThisTileType.equals("zz_no_audio_needed")) {
+                    totalAudio--;
+                }
+            }
+        }
 
+        // SoundPool loads are not safe to overlap. One thread keeps the
+        // decoded clips from arriving all at once on a small phone.
         new Thread(new Runnable() {
             @Override
             public void run() {
                 loadGameAudio();
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
                 loadWordAudio();
-            }
-        }).start();
-
-        if (hasTileAudio) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+                if (hasTileAudio) {
                     loadTileAudio();
                 }
-            }).start();
-        }
-
-        if (hasSyllableAudio) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+                if (hasSyllableAudio) {
                     loadSyllableAudio();
                 }
-            }).start();
-        }
+            }
+        }).start();
 
         //JP: alpha tiles colors separated into r,g,b
         //ex: the first color 6200EE corresponds to 98, 0, 1 in the 0 index of each array
@@ -133,8 +126,8 @@ public class LoadingScreen extends AppCompatActivity {
         final int[] color_index = {0};
         final int[] mod_color = {0};
 
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        colorTimer = new Timer();
+        colorTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 color_index[0]++; //JP: used w/mod_color to iterate through colors in reds, greens,
@@ -238,13 +231,11 @@ public class LoadingScreen extends AppCompatActivity {
                 i++;
                 LOGGER.info("LoadProgress: next task: load tile audio " + i + " of " + tileList.size() + ": " + tile.text + " (" + tile.audioName + ")");
             }
-            if(!tile.audioForThisTileType.equals("zz_no_audio_needed")) {
+            if (!tile.audioForThisTileType.equals("zz_no_audio_needed")) {
                 int resId = res.getIdentifier(tile.audioForThisTileType, "raw", context.getPackageName());
                 int duration = getAssetDuration(resId) + 100;
                 tileAudioIDs.put(tile.audioForThisTileType, gameSounds.load(context, resId, 2));
                 tileDurations.put(tile.audioForThisTileType, duration);
-            } else {
-                totalAudio--;
             }
 
         }
@@ -288,6 +279,18 @@ public class LoadingScreen extends AppCompatActivity {
             }
             mmr.release();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (colorTimer != null) {
+            colorTimer.cancel();
+            colorTimer = null;
+        }
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
+        super.onDestroy();
     }
 
     private void forceRTLIfSupported() {
