@@ -38,6 +38,7 @@ import static org.alphatilesapps.alphatiles.Start.incorrectSoundID;
 import static org.alphatilesapps.alphatiles.Start.correctFinalSoundID;
 import static org.alphatilesapps.alphatiles.Start.correctSoundDuration;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -277,8 +278,16 @@ public class LoadingScreen extends AppCompatActivity {
     private int getAssetDuration(int assetID) {
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         AssetFileDescriptor afd = context.getResources().openRawResourceFd(assetID);
-        mmr.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-        return Integer.parseInt(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+        try {
+            mmr.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            return Integer.parseInt(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+        } finally {
+            try {
+                afd.close();
+            } catch (IOException ignored) {
+            }
+            mmr.release();
+        }
     }
 
     private void forceRTLIfSupported() {
