@@ -277,7 +277,10 @@ public class LoadingScreen extends AppCompatActivity {
                 afd.close();
             } catch (IOException ignored) {
             }
-            mmr.release();
+            try {
+                mmr.release();
+            } catch (IOException ignored) {
+            }
         }
     }
 
